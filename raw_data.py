@@ -51,6 +51,12 @@ class RawData:
 
     @staticmethod
     def __is_preamble(potential_preamble, noise_threshold):
+        """
+        Determines whether the array contains a mode-s preamble
+        :param potential_preamble: An array of length 16 containing absolute values from SDR
+        :param noise_threshold: Values at or above this threshold are classed as high, otherwise low
+        :return: True if preamble, False otherwise
+        """
         high_bits = (0, 2, 7, 9,)
 
         for i in range(0, 16):
