@@ -25,6 +25,18 @@ class RawData:
         noise_threshold = median + (median * 1.4826 * 4)
         preamble_indices = RawData.__detect_preambles(abs_data, noise_threshold)
 
+        packets = []
+        for index in preamble_indices:
+            packet = []
+            for i in range(index + 16, index + 240, 2):
+                if abs_data[i] > abs_data[i + 1]:
+                    packet.append(1)
+                else:
+                    packet.append(0)
+            packets.append(packet)
+
+        return packets
+
     @staticmethod
     def __detect_preambles(abs_data, noise_threshold):
         preamble_indices = []
