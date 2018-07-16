@@ -1,8 +1,7 @@
 from utils import bin2int, bin2hex
-from abc import ABC, abstractmethod
 
 
-class Router(ABC):
+class Router:
     """
     This class is responsible for taking a list of binary packets and passing them to the correct Downlink Format
     handler.
@@ -23,7 +22,7 @@ class Router(ABC):
             downlink_format = Router.__get_downlink_format(packet)
 
             if downlink_format in Router.routing_table:
-                packet_decoded = Router.__decode_packet(Router.routing_table[downlink_format])
+                packet_decoded = Router.routing_table[downlink_format](packet)
 
                 if packet_decoded:
                     icao = Router.__get_icao(packet)
@@ -34,11 +33,6 @@ class Router(ABC):
                         data_extracted[icao] = packet_decoded
 
         return data_extracted
-
-    @classmethod
-    @abstractmethod
-    def __decode_packet(cls, packet):
-        pass
 
     @staticmethod
     def __get_downlink_format(packet):
