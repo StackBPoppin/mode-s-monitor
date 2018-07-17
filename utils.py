@@ -9,6 +9,13 @@ def bin2int(binary_arr):
 def bin2hex(binary_arr):
     return hex(bin2int(binary_arr))[2:]
 
+"""
+The implementation of nl, mod, crc and calc_lat_lon follows the steps found here:
+http://mode-s.org/decode/adsb/compact-position-report.html
+http://mode-s.org/decode/adsb/airborne-position.html
+http://mode-s.org/decode/adsb/introduction.html#ads-b-checksum
+"""
+
 
 def crc(binary_packet, encode=False):
     # Work on a copy of the binary packet to not alter the original

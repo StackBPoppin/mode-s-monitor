@@ -22,7 +22,9 @@ class DownlinkFormat17:
             return cls.__extract_call_sign(packet)
 
         if 9 <= type_code <= 18:
-            return cls.__extract_position(packet)
+            position_dict = cls.__extract_position(packet)
+            position_dict.update(cls.__extract_altitude(packet))
+            return position_dict
 
         if type_code == 19:
             return cls.__extract_velocity(packet)
@@ -55,6 +57,22 @@ class DownlinkFormat17:
             return {'lat_odd': latitude, 'lon_odd': longitude, 'odd_timestamp': datetime.now()}
         else:
             return {'lat_even': latitude, 'lon_even': longitude, 'even_timestamp': datetime.now()}
+
+    @staticmethod
+    def __extract_altitude(packet):
+        altitude_slice = packet[40:52]
+        altitude = bin2int(altitude_slice)
+
+        q_bit = altitude_slice.pop(7)  # 1 = multiples of 25ft, 0 = multiples of 100ft
+
+        if q_bit:
+            altitude *= 25
+        else:
+            altitude *= 100
+
+        altitude -= 1000
+
+        return {'altitude': altitude}
 
     @staticmethod
     def __extract_velocity(packet):
