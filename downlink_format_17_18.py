@@ -7,8 +7,8 @@ class DownlinkFormat17:
     """
     This class handles Downlink Format 17 and 18
     """
-    @classmethod
-    def decode_packet(cls, packet):
+    @staticmethod
+    def decode_packet(packet):
         """
         Runs a CRC check to ensure packet integrity, detects Type Code and decodes corresponding property
         :return: A dictionary containing property (Altitude, Airspeed etc.) and its value. eg: {'altitude': 32000}
@@ -22,8 +22,8 @@ class DownlinkFormat17:
             return cls.__extract_call_sign(packet)
 
         if 9 <= type_code <= 18:
-            position_dict = cls.__extract_position(packet)
-            position_dict.update(cls.__extract_altitude(packet))
+            position_dict = DownlinkFormat17.__extract_position(packet)
+            position_dict.update(DownlinkFormat17.__extract_altitude(packet))
             return position_dict
 
         if type_code == 19:

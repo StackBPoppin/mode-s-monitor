@@ -3,6 +3,7 @@ from raw_data import RawData
 from router import Router
 from downlink_format_17_18 import DownlinkFormat17
 from utils import calc_lat_lon
+from output import Output
 
 
 class Driver:
@@ -62,7 +63,7 @@ class Driver:
                     if position:
                         Driver.global_aircraft_data[icao].update(position)
 
-            print(Driver.global_aircraft_data)
+            Output.curses_table_output(Driver.global_aircraft_data)
 
 if __name__ == '__main__':
     Driver.run()
