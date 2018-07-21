@@ -19,7 +19,7 @@ class DownlinkFormat17:
         type_code = bin2int(packet[32:37])
 
         if 1 <= type_code <= 4:
-            return cls.__extract_call_sign(packet)
+            return DownlinkFormat17.__extract_call_sign(packet)
 
         if 9 <= type_code <= 18:
             position_dict = DownlinkFormat17.__extract_position(packet)
@@ -27,7 +27,7 @@ class DownlinkFormat17:
             return position_dict
 
         if type_code == 19:
-            return cls.__extract_velocity(packet)
+            return DownlinkFormat17.__extract_velocity(packet)
 
     @staticmethod
     def __extract_call_sign(packet):
@@ -61,9 +61,8 @@ class DownlinkFormat17:
     @staticmethod
     def __extract_altitude(packet):
         altitude_slice = packet[40:52]
-        altitude = bin2int(altitude_slice)
-
         q_bit = altitude_slice.pop(7)  # 1 = multiples of 25ft, 0 = multiples of 100ft
+        altitude = bin2int(altitude_slice)
 
         if q_bit:
             altitude *= 25
